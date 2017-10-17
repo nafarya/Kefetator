@@ -24,10 +24,11 @@ public class Kefetator {
             final String functionName = fctx.NAME().getText();
             functions.put(functionName, fctx);
         }
-        return evalFunction(functions.get("main"), Arrays.asList());
+        return evalFunction("main", Arrays.asList());
     }
 
-    private int evalFunction(LangParser.FunctionContext ctx, List<Integer> evaluatedArgs) {
+    private int evalFunction(String name, List<Integer> evaluatedArgs) {
+        LangParser.FunctionContext ctx = functions.get(name);
         VariableContext vc = new FunctionContext();
         for (int i = 0; i < evaluatedArgs.size(); i++) {
             final String argName = ctx.funcDeclArgs().NAME().get(i).getText();
@@ -43,7 +44,34 @@ public class Kefetator {
     private void evalStatement(LangParser.StatementContext st) {
         if (st.print() != null) {
             System.out.println(evalAtom(st.print().atom()));
+        } else if (st.assignment() != null) {
+            evalAssignment(st.assignment().assignmentBody());
         }
+    }
+
+    private void evalAssignment(LangParser.AssignmentBodyContext ctx) {
+        final int value;
+        if (ctx.expr() != null) {
+            value = evalExpr(ctx.expr());
+        } else if (ctx.funccall() != null) {
+            List<Integer> args = evalFunctionArgs(ctx.funccall().funcargs());
+            value = evalFunction(ctx.funccall().NAME().getText(), args);
+        } else {
+            throw new RuntimeException("Bad state");
+        }
+        contextStack.get(contextStack.size() - 1).getContext().put(ctx.NAME().getText(), value);
+    }
+
+    private int evalExpr(LangParser.ExprContext ctx) {
+        return ctx.value;
+    }
+
+    private List<Integer> evalFunctionArgs(LangParser.FuncargsContext ctx) {
+        List<Integer> args = new ArrayList<>();
+        for (LangParser.AtomContext arg : ctx.atom()) {
+            args.add(evalAtom(arg));
+        }
+        return args;
     }
 
     private int evalAtom(LangParser.AtomContext ctx) {
