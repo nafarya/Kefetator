@@ -38,6 +38,7 @@ public class Kefetator {
         for (LangParser.StatementContext st : ctx.funcBody().statement()) {
             evalStatement(st);
         }
+        contextStack.remove(contextStack.size() - 1);
         return 0;
     }
 
@@ -106,7 +107,8 @@ public class Kefetator {
         } else if (ctx.NAME() != null) {
             return lookupVariable(ctx.NAME().getText());
         } else if (ctx.funccall() != null) {
-            throw new RuntimeException("Unimplemented");
+            List<Integer> args = evalFunctionArgs(ctx.funccall().funcargs());
+            return evalFunction(ctx.funccall().NAME().getText(), args);
         }
         return 0;
     }
