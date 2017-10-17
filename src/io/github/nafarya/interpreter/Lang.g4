@@ -14,22 +14,18 @@ prog returns [int value]
     ;
 
 function locals [ Map<String, Integer> vc = new HashMap<>() ]
-    : 'func' name=NAME '(' args ')' '{'  funcbody '}'
+    : 'func' name=NAME '(' funcDeclArgs ')' '{'  funcBody '}'
     ;
 
-args
-    : arg*
+funcDeclArgs
+    : NAME*
     ;
 
-arg
-    : NAME | NUM
-    ;
-
-funcbody
+funcBody
     : statement*
     ;
 
-ifbody
+ifBranch
     : statement*
     ;
 
@@ -55,7 +51,7 @@ funcargs
     ;
 
 forloop locals [ Map<String, Integer> vc = new HashMap<>() ]
-    : 'for' '(' (NAME | NUM) ')' '{' forbody '}'
+    : 'for' assignmentBody SEMICOLON atom SEMICOLON assignmentBody '{' forbody '}'
     ;
 
 condition
@@ -63,7 +59,7 @@ condition
     ;
 
 ifclause locals [ Map<String, Integer> vc = new HashMap<>() ]
-    : 'if' '(' expr ')' '{' ifbody '}' ('else' '{' ifbody '}')?
+    : 'if' '(' expr ')' '{' ifBranch '}' ('else' '{' ifBranch '}')?
     ;
 
 ret
@@ -72,7 +68,11 @@ ret
     ;
 
 assignment returns [int value]
-    : NAME EQ (expr | funccall) SEMICOLON
+    : assignmentBody SEMICOLON
+    ;
+
+assignmentBody returns [int value]
+    : NAME EQ (expr | funccall)
     ;
 
 print
@@ -90,15 +90,8 @@ mulExpr returns [int value]
     ;
 
 atom returns [int value]
-    : NUM { $value = Integer.parseInt($NUM.text); }
-    | NAME {
-        Integer v = (Integer)mp.get($NAME.text);
-        if (v == null) {
-            System.err.println("Undefined variable: " + $NAME.text);
-        } else {
-            $value = v.intValue();
-        }
-      }
+    : NUM
+    | NAME
     | '(' expr ')'
     | funccall
     ;

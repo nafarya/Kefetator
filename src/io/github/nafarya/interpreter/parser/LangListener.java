@@ -32,45 +32,35 @@ public interface LangListener extends ParseTreeListener {
 	 */
 	void exitFunction(LangParser.FunctionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LangParser#args}.
+	 * Enter a parse tree produced by {@link LangParser#funcDeclArgs}.
 	 * @param ctx the parse tree
 	 */
-	void enterArgs(LangParser.ArgsContext ctx);
+	void enterFuncDeclArgs(LangParser.FuncDeclArgsContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LangParser#args}.
+	 * Exit a parse tree produced by {@link LangParser#funcDeclArgs}.
 	 * @param ctx the parse tree
 	 */
-	void exitArgs(LangParser.ArgsContext ctx);
+	void exitFuncDeclArgs(LangParser.FuncDeclArgsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LangParser#arg}.
+	 * Enter a parse tree produced by {@link LangParser#funcBody}.
 	 * @param ctx the parse tree
 	 */
-	void enterArg(LangParser.ArgContext ctx);
+	void enterFuncBody(LangParser.FuncBodyContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LangParser#arg}.
+	 * Exit a parse tree produced by {@link LangParser#funcBody}.
 	 * @param ctx the parse tree
 	 */
-	void exitArg(LangParser.ArgContext ctx);
+	void exitFuncBody(LangParser.FuncBodyContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LangParser#funcbody}.
+	 * Enter a parse tree produced by {@link LangParser#ifBranch}.
 	 * @param ctx the parse tree
 	 */
-	void enterFuncbody(LangParser.FuncbodyContext ctx);
+	void enterIfBranch(LangParser.IfBranchContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LangParser#funcbody}.
+	 * Exit a parse tree produced by {@link LangParser#ifBranch}.
 	 * @param ctx the parse tree
 	 */
-	void exitFuncbody(LangParser.FuncbodyContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link LangParser#ifbody}.
-	 * @param ctx the parse tree
-	 */
-	void enterIfbody(LangParser.IfbodyContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LangParser#ifbody}.
-	 * @param ctx the parse tree
-	 */
-	void exitIfbody(LangParser.IfbodyContext ctx);
+	void exitIfBranch(LangParser.IfBranchContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LangParser#forbody}.
 	 * @param ctx the parse tree
@@ -91,6 +81,26 @@ public interface LangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStatement(LangParser.StatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LangParser#funccall}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunccall(LangParser.FunccallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LangParser#funccall}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunccall(LangParser.FunccallContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LangParser#funcargs}.
+	 * @param ctx the parse tree
+	 */
+	void enterFuncargs(LangParser.FuncargsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LangParser#funcargs}.
+	 * @param ctx the parse tree
+	 */
+	void exitFuncargs(LangParser.FuncargsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LangParser#forloop}.
 	 * @param ctx the parse tree
@@ -141,6 +151,16 @@ public interface LangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAssignment(LangParser.AssignmentContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LangParser#assignmentBody}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignmentBody(LangParser.AssignmentBodyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LangParser#assignmentBody}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignmentBody(LangParser.AssignmentBodyContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LangParser#print}.
 	 * @param ctx the parse tree

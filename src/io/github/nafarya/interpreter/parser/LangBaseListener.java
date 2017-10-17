@@ -44,49 +44,37 @@ public class LangBaseListener implements LangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArgs(LangParser.ArgsContext ctx) { }
+	@Override public void enterFuncDeclArgs(LangParser.FuncDeclArgsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArgs(LangParser.ArgsContext ctx) { }
+	@Override public void exitFuncDeclArgs(LangParser.FuncDeclArgsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArg(LangParser.ArgContext ctx) { }
+	@Override public void enterFuncBody(LangParser.FuncBodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArg(LangParser.ArgContext ctx) { }
+	@Override public void exitFuncBody(LangParser.FuncBodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFuncbody(LangParser.FuncbodyContext ctx) { }
+	@Override public void enterIfBranch(LangParser.IfBranchContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFuncbody(LangParser.FuncbodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterIfbody(LangParser.IfbodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIfbody(LangParser.IfbodyContext ctx) { }
+	@Override public void exitIfBranch(LangParser.IfBranchContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -111,6 +99,30 @@ public class LangBaseListener implements LangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStatement(LangParser.StatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunccall(LangParser.FunccallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunccall(LangParser.FunccallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFuncargs(LangParser.FuncargsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFuncargs(LangParser.FuncargsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -171,6 +183,18 @@ public class LangBaseListener implements LangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAssignment(LangParser.AssignmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAssignmentBody(LangParser.AssignmentBodyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssignmentBody(LangParser.AssignmentBodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

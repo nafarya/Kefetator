@@ -1,11 +1,9 @@
 package io.github.nafarya.interpreter;
 
-import io.github.nafarya.interpreter.parser.EvalLangVisitor;
 import io.github.nafarya.interpreter.parser.LangLexer;
 import io.github.nafarya.interpreter.parser.LangParser;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -24,8 +22,13 @@ public class Main {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         LangParser parser = new LangParser(tokens);
 
-        ParseTreeWalker walker = new ParseTreeWalker();
-        EvalLangVisitor visitor = new EvalLangVisitor();
-        walker.walk(visitor, parser.prog());
+        Kefetator kef = new Kefetator();
+        kef.evalProg(parser.prog());
+
+//        ParseTreeWalker walker = new ParseTreeWalker();
+//        EvalLangVisitor visitor = new EvalLangVisitor();
+//        walker.walk(visitor, parser.prog());
+
+
     }
 }
