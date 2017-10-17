@@ -79,17 +79,22 @@ print
     : 'print' '(' atom ')' SEMICOLON
     ;
 
-expr returns [int value]
-    : x=mulExpr { $value = $x.value; } ('+' y=mulExpr { $value += $y.value; })*
-    | x=mulExpr { $value = $x.value; } ('-' y=mulExpr { $value -= $y.value; })*
+expr
+    : mulExpr term*
     ;
 
-mulExpr returns [int value]
-    : x=atom { $value = $x.value; } ('*' y=atom { $value *= $y.value; })*
-    | x=atom { $value = $y.value; } ('/' y=atom { $value /= $y.value; })*
+term
+    : ((ADD | SUB) mulExpr)
     ;
 
-atom returns [int value]
+mulExpr
+    : atom factor*
+    ;
+
+factor
+    : ((MUL | DIV) atom);
+
+atom
     : NUM
     | NAME
     | '(' expr ')'
@@ -99,6 +104,10 @@ atom returns [int value]
 //if (mp.containsKey($NAME.text)) { throw new RuntimeException("Variable redeclared)
 NAME : [a-zA-z] [a-zA-Z0-9]*;
 EQ : '=';
+ADD : '+';
+SUB : '-';
+MUL : '*';
+DIV : '/';
 SEMICOLON : ';';
 NUM : [0-9]+ ;
 WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines

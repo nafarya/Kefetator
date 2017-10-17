@@ -1,6 +1,5 @@
 func main() {
-  a = 6;
-  print(5);
+  a = 2+2*2;
   print(a);
   return 0;
 }

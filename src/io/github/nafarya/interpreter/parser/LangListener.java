@@ -182,6 +182,16 @@ public interface LangListener extends ParseTreeListener {
 	 */
 	void exitExpr(LangParser.ExprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LangParser#term}.
+	 * @param ctx the parse tree
+	 */
+	void enterTerm(LangParser.TermContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LangParser#term}.
+	 * @param ctx the parse tree
+	 */
+	void exitTerm(LangParser.TermContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LangParser#mulExpr}.
 	 * @param ctx the parse tree
 	 */
@@ -191,6 +201,16 @@ public interface LangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMulExpr(LangParser.MulExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LangParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void enterFactor(LangParser.FactorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LangParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void exitFactor(LangParser.FactorContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LangParser#atom}.
 	 * @param ctx the parse tree

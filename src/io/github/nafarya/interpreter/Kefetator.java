@@ -62,8 +62,34 @@ public class Kefetator {
         contextStack.get(contextStack.size() - 1).getContext().put(ctx.NAME().getText(), value);
     }
 
+    // expr = mulExpr + term*
     private int evalExpr(LangParser.ExprContext ctx) {
-        return ctx.value;
+        int result = evalMulExpr(ctx.mulExpr());
+        for (LangParser.TermContext term : ctx.term()) {
+            int snd = evalMulExpr(term.mulExpr());
+            if (term.ADD() != null) {
+                result += snd;
+            } else if (term.SUB() != null) {
+                result -= snd;
+            }
+        }
+        return result;
+    }
+
+    // mulexpr = atom + factor*
+    private int evalMulExpr(LangParser.MulExprContext ctx) {
+        int result = evalAtom(ctx.atom());
+
+        for (LangParser.FactorContext factor : ctx.factor()) {
+            int snd = evalAtom(factor.atom());
+            if (factor.MUL() != null) {
+                result*= snd;
+            } else if (factor.DIV() != null) {
+                result /= snd;
+            }
+        }
+
+        return result;
     }
 
     private List<Integer> evalFunctionArgs(LangParser.FuncargsContext ctx) {
