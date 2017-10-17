@@ -1,28 +1,6 @@
-func abs(a) {
-  if (a) {
-      a = 1;
-  }
-  for (4) {
-    if (3) {
-      print(1);
-    } else {
-      print(0);
-    }
-  }
-  return a * b;
-}
-
-func kaif() {
-  x = 5;
-  if (1) {
-    x = 4;
-    print(x);
-  }
-  print(x);
-}
-
 func main() {
-  x = 5;
-  print(2+2);
-  return x;
+  a = 6;
+  print(5);
+  print(a);
+  return 0;
 }
