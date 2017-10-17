@@ -36,18 +36,18 @@ public class Kefetator {
         }
         contextStack.add(vc);
         for (LangParser.StatementContext st : ctx.funcBody().statement()) {
-            evalStatement(st);
+            if (st.print() != null) {
+                System.out.println(evalAtom(st.print().atom()));
+            } else if (st.assignment() != null) {
+                evalAssignment(st.assignment().assignmentBody());
+            } else if (st.ret() != null) {
+                int value = evalExpr(st.ret().expr());
+                contextStack.remove(contextStack.size() - 1);
+                return value;
+            }
         }
         contextStack.remove(contextStack.size() - 1);
         return 0;
-    }
-
-    private void evalStatement(LangParser.StatementContext st) {
-        if (st.print() != null) {
-            System.out.println(evalAtom(st.print().atom()));
-        } else if (st.assignment() != null) {
-            evalAssignment(st.assignment().assignmentBody());
-        }
     }
 
     private void evalAssignment(LangParser.AssignmentBodyContext ctx) {
