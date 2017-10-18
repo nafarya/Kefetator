@@ -2,6 +2,7 @@ package io.github.nafarya.interpreter;
 
 import io.github.nafarya.interpreter.parser.LangParser;
 import io.github.nafarya.interpreter.util.FunctionContext;
+import io.github.nafarya.interpreter.util.IfClauseContext;
 import io.github.nafarya.interpreter.util.VariableContext;
 
 import java.util.*;
@@ -37,9 +38,9 @@ public class Kefetator {
             final String argName = ctx.funcDeclArgs().NAME().get(i).getText();
             vc.getContext().put(argName, evaluatedArgs.get(i));
         }
-        contextStack.add(vc);
+        pushContext(vc);
         Integer returnValue = evalStatements(ctx.funcBody().statement());
-        contextStack.remove(contextStack.size() - 1);
+        popContext();
         if (returnValue != null) {
             return returnValue;
         }
@@ -56,7 +57,10 @@ public class Kefetator {
                 return evalExpr(st.ret().expr());
             } else if (st.ifclause() != null) {
                 // TODO: add ifcaluse variable context
+                VariableContext vc = new IfClauseContext();
+                pushContext(vc);
                 Integer ifReturns = evalIfClause(st.ifclause());
+                popContext();
                 if (ifReturns != null) {
                     return ifReturns;
                 }
@@ -87,7 +91,7 @@ public class Kefetator {
         } else {
             throw new RuntimeException("Bad state");
         }
-        contextStack.get(contextStack.size() - 1).getContext().put(ctx.NAME().getText(), value);
+        putVariableInCurrentContext(ctx.NAME().getText(), value);
     }
 
     // expr = mulExpr + term*
@@ -156,6 +160,18 @@ public class Kefetator {
         }
         System.err.println("Variable not in scope: " + name); //TODO: throw and handle exception
         return 0;
+    }
+
+    private void pushContext(VariableContext vc) {
+        contextStack.add(vc);
+    }
+
+    private void popContext() {
+        contextStack.remove(contextStack.size() - 1);
+    }
+
+    private void putVariableInCurrentContext(String name, int value) {
+
     }
 
 }
