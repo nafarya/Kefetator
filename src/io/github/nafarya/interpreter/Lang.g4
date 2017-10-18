@@ -9,12 +9,12 @@ import java.util.Map;
 HashMap mp = new HashMap();
 }
 
-prog returns [int value]
+prog
     : function*
     ;
 
 function
-    : 'func' name=NAME '(' funcDeclArgs ')' '{'  funcBody '}'
+    : 'func' NAME '(' funcDeclArgs ')' '{'  funcBody '}'
     ;
 
 funcDeclArgs
@@ -91,11 +91,11 @@ ret
     | 'return' NAME SEMICOLON
     ;
 
-assignment returns [int value]
+assignment
     : assignmentBody SEMICOLON
     ;
 
-assignmentBody returns [int value]
+assignmentBody
     : NAME EQ (expr | funccall)
     ;
 
@@ -125,7 +125,6 @@ atom
     | funccall
     ;
 
-//if (mp.containsKey($NAME.text)) { throw new RuntimeException("Variable redeclared)
 NAME : [a-zA-z] [a-zA-Z0-9]*;
 EQ : '=';
 ADD : '+';
