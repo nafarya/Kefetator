@@ -1,6 +1,7 @@
 package io.github.nafarya.interpreter;
 
 import io.github.nafarya.interpreter.parser.LangParser;
+import io.github.nafarya.interpreter.util.ForLoopContext;
 import io.github.nafarya.interpreter.util.FunctionContext;
 import io.github.nafarya.interpreter.util.IfClauseContext;
 import io.github.nafarya.interpreter.util.VariableContext;
@@ -34,6 +35,8 @@ public class Kefetator {
     }
 
     private int evalFunction(String name, List<Integer> evaluatedArgs) {
+//        System.out.println("CALL " + name + " [" +
+//                evaluatedArgs.stream().map(String::valueOf).collect(Collectors.joining(",")) + "]");
         if ("readInt".equals(name)) {
             if (evaluatedArgs.size() > 0) {
                 throw new RuntimeException("readInt() must have no arguments");
@@ -74,14 +77,39 @@ public class Kefetator {
                 if (ifReturns != null) {
                     return ifReturns;
                 }
+            } else if (st.forloop() != null) {
+                VariableContext vc = new ForLoopContext();
+                pushContext(vc);
+                Integer forReturns = evalForLoop(st.forloop());
+                if (forReturns != null) {
+                    return forReturns;
+                }
             }
+        }
+        return null;
+    }
+
+    private Integer evalForLoop(LangParser.ForloopContext ctx) {
+        if (ctx.forPreaction().assignmentBody() != null) {
+            evalAssignment(ctx.forPreaction().assignmentBody());
+        }
+        for (;;) {
+            int cond = evalAtom(ctx.forPredicate().atom());
+            if (cond == 0) {
+                break;
+            }
+            Integer forReturns = evalStatements(ctx.forbody().statement());
+            if (forReturns != null) {
+                return forReturns;
+            }
+            evalAssignment(ctx.forPostaction().assignmentBody());
         }
         return null;
     }
 
     private Integer evalIfClause(LangParser.IfclauseContext ctx) {
         int predicate = evalExpr(ctx.ifPredicate().expr());
-        if (predicate == 1) {
+        if (predicate != 0) {
             return evalStatements(ctx.leftBranch().ifBranch().statement());
         } else {
             if (ctx.rightBranch().ifBranch() != null) {
@@ -150,8 +178,10 @@ public class Kefetator {
         } else if (ctx.funccall() != null) {
             List<Integer> args = evalFunctionArgs(ctx.funccall().funcargs());
             return evalFunction(ctx.funccall().NAME().getText(), args);
+        } else if (ctx.expr() != null) {
+            return evalExpr(ctx.expr());
         }
-        return 0;
+        throw new RuntimeException("wtf");
     }
 
     private int lookupVariable(String name) {

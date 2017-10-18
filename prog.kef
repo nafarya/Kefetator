@@ -1,24 +1,33 @@
-func one() {
-  return 1;
+func condtest(a) {
+  if (1) {
+    a = 5;
+    if (0) {
+      a = 7;
+    } else {
+      a = 6;
+    }
+  }
+  return a;
 }
 
-func bool(x) {
-  if (x) {
-    return 1;
+func f(n) {
+  if (n) {
+    return n * f( (n - 1) );
   } else {
-    return 0;
+    return 1;
   }
 }
 
-func main() {
-  a = 2-3;
-  b = one();
-  print(a);
-  print(b);
+func testCond() {
+  c = condtest(2);
+  print(c);
+  return 0;
+}
 
-  true = bool(6);
-  false = bool(0);
-  print(true);
-  print(false);
+func main() {
+  n = readInt();
+  for i = n; i; i = i - 1 {
+    print( f(i) );
+  }
   return 0;
 }

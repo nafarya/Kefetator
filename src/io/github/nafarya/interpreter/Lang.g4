@@ -13,7 +13,7 @@ prog returns [int value]
     : function*
     ;
 
-function locals [ Map<String, Integer> vc = new HashMap<>() ]
+function
     : 'func' name=NAME '(' funcDeclArgs ')' '{'  funcBody '}'
     ;
 
@@ -50,8 +50,20 @@ funcargs
     : atom*
     ;
 
-forloop locals [ Map<String, Integer> vc = new HashMap<>() ]
-    : 'for' assignmentBody SEMICOLON atom SEMICOLON assignmentBody '{' forbody '}'
+forloop
+    : 'for' forPreaction? SEMICOLON forPredicate? SEMICOLON forPostaction? '{' forbody '}'
+    ;
+
+forPreaction
+    : assignmentBody
+    ;
+
+forPredicate
+    : atom
+    ;
+
+forPostaction
+    : assignmentBody
     ;
 
 condition
