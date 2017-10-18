@@ -5,6 +5,7 @@ import io.github.nafarya.interpreter.util.FunctionContext;
 import io.github.nafarya.interpreter.util.IfClauseContext;
 import io.github.nafarya.interpreter.util.VariableContext;
 
+import java.io.InputStreamReader;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -15,10 +16,13 @@ public class Kefetator {
 
     private Map<String, LangParser.FunctionContext> functions;
     private List<VariableContext> contextStack;
+    private Scanner scanner;
 
     public Kefetator() {
         functions = new HashMap<>();
         contextStack = new ArrayList<>();
+        InputStreamReader reader = new InputStreamReader(System.in);
+        scanner = new Scanner(reader);
     }
 
     public int evalProg(LangParser.ProgContext ctx) {
@@ -30,6 +34,12 @@ public class Kefetator {
     }
 
     private int evalFunction(String name, List<Integer> evaluatedArgs) {
+        if ("readInt".equals(name)) {
+            if (evaluatedArgs.size() > 0) {
+                throw new RuntimeException("readInt() must have no arguments");
+            }
+            return scanner.nextInt();
+        }
         LangParser.FunctionContext ctx = functions.get(name);
         if (ctx == null) {
             throw new RuntimeException("Function '" + name + "' is not defined");
