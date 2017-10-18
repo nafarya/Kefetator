@@ -1,12 +1,12 @@
 package io.github.nafarya.interpreter.util;
 
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Created by dan on 17.10.17.
  */
 public class ForLoopContext extends VariableContext {
-    public ForLoopContext(Map<String, Integer> context) {
-        super(context);
+    public ForLoopContext() {
+        super(new HashMap<>());
     }
 }
