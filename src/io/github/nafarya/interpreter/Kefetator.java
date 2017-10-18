@@ -6,6 +6,7 @@ import io.github.nafarya.interpreter.util.IfClauseContext;
 import io.github.nafarya.interpreter.util.VariableContext;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 /**
  * Created by dan on 17.10.17.
@@ -70,7 +71,7 @@ public class Kefetator {
 
     private Integer evalIfClause(LangParser.IfclauseContext ctx) {
         int predicate = evalExpr(ctx.ifPredicate().expr());
-        if (predicate == 0) {
+        if (predicate == 1) {
             return evalStatements(ctx.leftBranch().ifBranch().statement());
         } else {
             if (ctx.rightBranch().ifBranch() != null) {
@@ -145,20 +146,16 @@ public class Kefetator {
 
     private int lookupVariable(String name) {
         int functionContextsSeen = 0;
-        for (int i = contextStack.size() - 1; i >= 0; i--) {
-            if (contextStack.get(i) instanceof FunctionContext) {
-                functionContextsSeen++;
-            }
-            if (functionContextsSeen > 1) {
-                break;
-            }
+        for (int i = contextStack.size() - 1; functionContextsSeen <= 1 && i >= 0; i--) {
             Integer value = contextStack.get(i).getContext().get(name);
             if (value != null) {
                 return value;
             }
+            if (contextStack.get(i) instanceof FunctionContext) {
+                functionContextsSeen++;
+            }
         }
-        System.err.println("Variable not in scope: " + name); //TODO: throw and handle exception
-        return 0;
+        throw new RuntimeException("Variable not in scope: " + name); //TODO: throw and handle exception
     }
 
     private void pushContext(VariableContext vc) {
@@ -169,8 +166,25 @@ public class Kefetator {
         contextStack.remove(contextStack.size() - 1);
     }
 
-    private void putVariableInCurrentContext(String name, int value) {
+    private static IntStream revRange(int from, int to) {
+        return IntStream.range(from, to).map(i -> to - i + from - 1);
+    }
 
+    private void putVariableInCurrentContext(String name, int value) {
+        int functionContextsSeen = 0;
+        int i, index = contextStack.size() - 1;
+        for (i = contextStack.size() - 1; i >= 0; i--) {
+            if (contextStack.get(i) instanceof FunctionContext) {
+                functionContextsSeen++;
+                if (functionContextsSeen == 2) {
+                    break;
+                }
+            }
+            if (contextStack.get(i).getContext().containsKey(name)) {
+                index = i;
+            }
+        }
+        contextStack.get(index).getContext().put(name, value);
     }
 
 }
