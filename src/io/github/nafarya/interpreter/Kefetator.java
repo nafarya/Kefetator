@@ -90,11 +90,14 @@ public class Kefetator {
     }
 
     private Integer evalForLoop(LangParser.ForloopContext ctx) {
-        if (ctx.forPreaction().assignmentBody() != null) {
+        if (ctx.forPreaction() != null) {
             evalAssignment(ctx.forPreaction().assignmentBody());
         }
         for (;;) {
-            int cond = evalAtom(ctx.forPredicate().atom());
+            int cond = 1;
+            if (ctx.forPredicate() != null) {
+                cond = evalAtom(ctx.forPredicate().atom());
+            }
             if (cond == 0) {
                 break;
             }
@@ -102,7 +105,9 @@ public class Kefetator {
             if (forReturns != null) {
                 return forReturns;
             }
-            evalAssignment(ctx.forPostaction().assignmentBody());
+            if (ctx.forPostaction() != null) {
+                evalAssignment(ctx.forPostaction().assignmentBody());
+            }
         }
         return null;
     }
