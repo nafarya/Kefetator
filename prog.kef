@@ -1,5 +1,24 @@
+func one() {
+  return 1;
+}
+
+func bool(x) {
+  if (x) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
 func main() {
-  a = 2+2*2;
+  a = 2-3;
+  b = one();
   print(a);
+  print(b);
+
+  true = bool(6);
+  false = bool(0);
+  print(true);
+  print(false);
   return 0;
 }

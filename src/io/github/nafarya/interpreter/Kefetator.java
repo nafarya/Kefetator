@@ -29,25 +29,52 @@ public class Kefetator {
 
     private int evalFunction(String name, List<Integer> evaluatedArgs) {
         LangParser.FunctionContext ctx = functions.get(name);
+        if (ctx == null) {
+            throw new RuntimeException("Function '" + name + "' is not defined");
+        }
         VariableContext vc = new FunctionContext();
         for (int i = 0; i < evaluatedArgs.size(); i++) {
             final String argName = ctx.funcDeclArgs().NAME().get(i).getText();
             vc.getContext().put(argName, evaluatedArgs.get(i));
         }
         contextStack.add(vc);
-        for (LangParser.StatementContext st : ctx.funcBody().statement()) {
+        Integer returnValue = evalStatements(ctx.funcBody().statement());
+        contextStack.remove(contextStack.size() - 1);
+        if (returnValue != null) {
+            return returnValue;
+        }
+        throw new RuntimeException("Function '" + name + "' has no return statement");
+    }
+
+    private Integer evalStatements(List<LangParser.StatementContext> statements) {
+        for (LangParser.StatementContext st : statements) {
             if (st.print() != null) {
                 System.out.println(evalAtom(st.print().atom()));
             } else if (st.assignment() != null) {
                 evalAssignment(st.assignment().assignmentBody());
             } else if (st.ret() != null) {
-                int value = evalExpr(st.ret().expr());
-                contextStack.remove(contextStack.size() - 1);
-                return value;
+                return evalExpr(st.ret().expr());
+            } else if (st.ifclause() != null) {
+                // TODO: add ifcaluse variable context
+                Integer ifReturns = evalIfClause(st.ifclause());
+                if (ifReturns != null) {
+                    return ifReturns;
+                }
             }
         }
-        contextStack.remove(contextStack.size() - 1);
-        return 0;
+        return null;
+    }
+
+    private Integer evalIfClause(LangParser.IfclauseContext ctx) {
+        int predicate = evalExpr(ctx.ifPredicate().expr());
+        if (predicate == 0) {
+            return evalStatements(ctx.leftBranch().ifBranch().statement());
+        } else {
+            if (ctx.rightBranch() != null) {
+                return evalStatements(ctx.rightBranch().ifBranch().statement());
+            }
+        }
+        return null;
     }
 
     private void evalAssignment(LangParser.AssignmentBodyContext ctx) {

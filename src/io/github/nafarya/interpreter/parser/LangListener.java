@@ -132,6 +132,36 @@ public interface LangListener extends ParseTreeListener {
 	 */
 	void exitIfclause(LangParser.IfclauseContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LangParser#ifPredicate}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfPredicate(LangParser.IfPredicateContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LangParser#ifPredicate}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfPredicate(LangParser.IfPredicateContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LangParser#leftBranch}.
+	 * @param ctx the parse tree
+	 */
+	void enterLeftBranch(LangParser.LeftBranchContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LangParser#leftBranch}.
+	 * @param ctx the parse tree
+	 */
+	void exitLeftBranch(LangParser.LeftBranchContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LangParser#rightBranch}.
+	 * @param ctx the parse tree
+	 */
+	void enterRightBranch(LangParser.RightBranchContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LangParser#rightBranch}.
+	 * @param ctx the parse tree
+	 */
+	void exitRightBranch(LangParser.RightBranchContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LangParser#ret}.
 	 * @param ctx the parse tree
 	 */

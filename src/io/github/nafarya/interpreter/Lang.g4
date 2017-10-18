@@ -58,8 +58,20 @@ condition
     : expr
     ;
 
-ifclause locals [ Map<String, Integer> vc = new HashMap<>() ]
-    : 'if' '(' expr ')' '{' ifBranch '}' ('else' '{' ifBranch '}')?
+ifclause
+    : 'if' '(' ifPredicate ')' '{' leftBranch '}' rightBranch
+    ;
+
+ifPredicate
+    : expr
+    ;
+
+leftBranch
+    : ifBranch
+    ;
+
+rightBranch
+    : ('else' '{' ifBranch '}')?
     ;
 
 ret
