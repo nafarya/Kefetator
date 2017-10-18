@@ -56,7 +56,6 @@ public class Kefetator {
             } else if (st.ret() != null) {
                 return evalExpr(st.ret().expr());
             } else if (st.ifclause() != null) {
-                // TODO: add ifcaluse variable context
                 VariableContext vc = new IfClauseContext();
                 pushContext(vc);
                 Integer ifReturns = evalIfClause(st.ifclause());
@@ -74,7 +73,7 @@ public class Kefetator {
         if (predicate == 0) {
             return evalStatements(ctx.leftBranch().ifBranch().statement());
         } else {
-            if (ctx.rightBranch() != null) {
+            if (ctx.rightBranch().ifBranch() != null) {
                 return evalStatements(ctx.rightBranch().ifBranch().statement());
             }
         }
