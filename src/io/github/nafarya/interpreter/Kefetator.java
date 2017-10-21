@@ -191,7 +191,7 @@ public class Kefetator {
 
     private int lookupVariable(String name) {
         int functionContextsSeen = 0;
-        for (int i = contextStack.size() - 1; functionContextsSeen <= 1 && i >= 0; i--) {
+        for (int i = contextStack.size() - 1; functionContextsSeen < 1 && i >= 0; i--) {
             Integer value = contextStack.get(i).getContext().get(name);
             if (value != null) {
                 return value;
