@@ -14,9 +14,20 @@ import java.nio.charset.StandardCharsets;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+
+        Process makeExec = Runtime.getRuntime().exec("chmod +x concatFiles.sh");
+        Process runExec  = Runtime.getRuntime().exec("./concatFiles.sh");
+        try {
+            makeExec.waitFor();
+            runExec.waitFor();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(
-                        new FileInputStream("prog.kef"), StandardCharsets.UTF_8));
+                        new FileInputStream("progKefExecFile.kef"), StandardCharsets.UTF_8));
+
         ANTLRInputStream input = new ANTLRInputStream(in);
         LangLexer lexer = new LangLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
