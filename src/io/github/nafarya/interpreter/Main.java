@@ -33,7 +33,7 @@ public class Main {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         LangParser parser = new LangParser(tokens);
 
-        Kefetator kef = new Kefetator();
+        Kefetator kef = new Kefetator(System.out);
         kef.evalProg(parser.prog());
 
 //        ParseTreeWalker walker = new ParseTreeWalker();
