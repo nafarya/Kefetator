@@ -7,6 +7,7 @@ import io.github.nafarya.interpreter.util.IfClauseContext;
 import io.github.nafarya.interpreter.util.VariableContext;
 
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -18,12 +19,14 @@ public class Kefetator {
     private Map<String, LangParser.FunctionContext> functions;
     private List<VariableContext> contextStack;
     private Scanner scanner;
+    private PrintStream outputStream;
 
-    public Kefetator() {
+    public Kefetator(PrintStream outputStream) {
         functions = new HashMap<>();
         contextStack = new ArrayList<>();
         InputStreamReader reader = new InputStreamReader(System.in);
         scanner = new Scanner(reader);
+        this.outputStream = outputStream;
     }
 
     public int evalProg(LangParser.ProgContext ctx) {
@@ -64,7 +67,7 @@ public class Kefetator {
     private Integer evalStatements(List<LangParser.StatementContext> statements) {
         for (LangParser.StatementContext st : statements) {
             if (st.print() != null) {
-                System.out.println(evalAtom(st.print().atom()));
+                outputStream.println(evalAtom(st.print().atom()));
             } else if (st.assignment() != null) {
                 evalAssignment(st.assignment().assignmentBody());
             } else if (st.ret() != null) {
